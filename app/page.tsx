@@ -1,103 +1,349 @@
-import Image from "next/image";
+"use client";
+import React, { useCallback, useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import {
+  Trash2,
+  Play,
+  RotateCcw,
+  Star,
+  ArrowRight,
+  LoaderCircle,
+} from "lucide-react";
+import { MySelect } from "@/components/custom/Select";
 
-export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+const TruthOrDareGame = () => {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [selectedLanguage, setSelectedLanguage] = useState<string>("english");
+  const [selectedLevel, setSelectedLevel] = useState<string>("family");
+  const [gameState, setGameState] = useState("setup"); // 'setup', 'playing', 'completed'
+  const [players, setPlayers] = useState<string[]>([]);
+  const [newPlayerName, setNewPlayerName] = useState("");
+  const [currentPlayerIndex, setCurrentPlayerIndex] = useState(0);
+  const [currentChallenge, setCurrentChallenge] = useState<string | null>("");
+  const [challengeType, setChallengeType] = useState<string | null>("");
+  const [completedChallenges, setCompletedChallenges] = useState(0);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+  const addPlayer = () => {
+    if (newPlayerName.trim() && !players.includes(newPlayerName.trim())) {
+      setPlayers([...players, newPlayerName.trim()]);
+      setNewPlayerName("");
+    }
+  };
+
+  const removePlayer = (index: number) => {
+    const newPlayers = players.filter((_, i) => i !== index);
+    setPlayers(newPlayers);
+    if (currentPlayerIndex >= newPlayers.length) {
+      setCurrentPlayerIndex(0);
+    }
+  };
+
+  const startGame = () => {
+    if (players.length >= 2) {
+      setGameState("playing");
+      setCurrentPlayerIndex(0);
+      setCompletedChallenges(0);
+    }
+  };
+
+  //Getting truth questions from the API
+  const selectTruth = useCallback(async () => {
+    setIsLoading(true);
+    const response = await fetch("/api/questions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        type: "dare",
+        questionFor: selectedLevel,
+        language: selectedLanguage,
+      }),
+    });
+    const data = await response.json();
+    setCurrentChallenge(data.message);
+    setChallengeType("dare");
+    setIsLoading(false);
+    // @typescript-eslint/no-explicit-any
+  }, [selectedLanguage, selectedLevel]);
+
+  //Getting dare questions from the API
+  const selectDare = useCallback(async () => {
+    setIsLoading(true);
+    const response = await fetch("/api/questions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        type: "dare",
+        questionFor: selectedLevel,
+        language: selectedLanguage,
+      }),
+    });
+    const data = await response.json();
+    setCurrentChallenge(data.message);
+    setChallengeType("dare");
+    setIsLoading(false);
+
+    // @typescript-eslint/no-explicit-any
+  }, [selectedLanguage, selectedLevel]);
+
+  const nextTurn = () => {
+    setCurrentPlayerIndex((prev) => (prev + 1) % players.length);
+    setCurrentChallenge(null);
+    setChallengeType(null);
+    setCompletedChallenges((prev) => prev + 1);
+  };
+
+  const resetGame = () => {
+    setGameState("setup");
+    setCurrentPlayerIndex(0);
+    setCurrentChallenge(null);
+    setChallengeType(null);
+    setCompletedChallenges(0);
+  };
+
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      addPlayer();
+    }
+  };
+
+  if (gameState === "setup") {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-red-900 p-4">
+        <div className="max-w-sm mx-auto">
+          {/* Header */}
+          <div className="text-center mb-12 pt-12">
+            <div className="w-16 h-16 bg-gradient-to-br from-red-500 to-orange-500 rounded-2xl mx-auto mb-6 flex items-center justify-center">
+              <Star className="w-8 h-8 text-white" />
+            </div>
+            <h1 className="text-3xl font-bold text-white mb-2">
+              Truth or Dare
+            </h1>
+            <p className="text-gray-400 text-sm">Add players to get started</p>
+          </div>
+
+          {/* Add Player Input */}
+          <div className="mb-8">
+            <div className="bg-white/10 backdrop-blur-xl rounded-2xl p-4 border border-white/20">
+              <Input
+                placeholder="Enter player name..."
+                value={newPlayerName}
+                onChange={(e) => setNewPlayerName(e.target.value)}
+                onKeyPress={handleKeyPress}
+                className="bg-transparent border-none text-white placeholder:text-gray-400 text-center text-lg font-medium focus-visible:ring-0"
+              />
+            </div>
+            <Button
+              onClick={addPlayer}
+              disabled={!newPlayerName.trim()}
+              className="w-full mt-4 bg-white text-black hover:bg-gray-100 rounded-2xl h-14 text-lg font-semibold"
+            >
+              Add Player
+            </Button>
+          </div>
+
+          {/* Players List */}
+          {players.length > 0 && (
+            <div className="mb-8">
+              <p className="text-white/60 text-sm mb-4 text-center">
+                PLAYERS ({players.length})
+              </p>
+              <div className="space-y-3">
+                {players.map((player, index) => (
+                  <div
+                    key={index}
+                    className="bg-white/10 backdrop-blur-xl rounded-2xl p-4 border border-white/20 flex items-center justify-between"
+                  >
+                    <span className="text-white font-medium">{player}</span>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => removePlayer(index)}
+                      className="text-red-400 hover:text-red-300 hover:bg-red-500/20 rounded-xl"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </Button>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Warning */}
+          {players.length < 2 && (
+            <Alert className="bg-yellow-500/20 border-yellow-400/30 rounded-2xl mb-8">
+              <AlertDescription className="text-yellow-200 text-center">
+                Add at least 2 players to start
+              </AlertDescription>
+            </Alert>
+          )}
+
+          {/* Start Button */}
+          <Button
+            onClick={startGame}
+            disabled={players.length < 2}
+            className="w-full bg-gradient-to-r from-red-500 to-orange-500 hover:from-red-600 hover:to-orange-600 text-white rounded-2xl h-14 text-lg font-semibold disabled:opacity-50"
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+            <Play className="w-5 h-5 mr-2" />
+            Start Game
+          </Button>
+
+          {/* Bottom spacing */}
+          <div className="h-8"></div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
+      </div>
+    );
+  }
+
+  console.log({ selectedLanguage, selectedLevel });
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-red-900 p-4">
+      <div className="max-w-sm mx-auto">
+        {/* Header */}
+        <div className="text-center mb-8 pt-12">
+          <Badge className="bg-white/20 text-white/80 px-4 py-2 rounded-full text-sm mb-4">
+            Round {completedChallenges + 1}
+          </Badge>
+          <h1 className="text-2xl font-bold text-white mb-2">Truth or Dare</h1>
+        </div>
+
+        {/* Current Player Card */}
+        <div className="bg-white/10 backdrop-blur-xl rounded-3xl p-6 border border-white/20 mb-8">
+          <div className="text-center mb-6">
+            <div className="w-12 h-12 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-2xl mx-auto mb-4 flex items-center justify-center">
+              <Star className="w-6 h-6 text-white" />
+            </div>
+            {/* react/no-unescaped-entities */}
+            <h2 className="text-xl font-bold text-white mb-1">
+              {players[currentPlayerIndex]}
+            </h2>
+            <p className="text-gray-400 text-sm">{`It's your turn!`}</p>
+          </div>
+
+          {!currentChallenge ? (
+            <div className="space-y-4">
+              <p className="text-white/80 text-center mb-6">
+                What do you choose?
+              </p>
+              {!isLoading ? (
+                <div className="space-y-3">
+                  <Button
+                    onClick={selectTruth}
+                    className="w-full bg-blue-600/80 hover:bg-blue-600 text-white rounded-2xl h-14 text-lg font-semibold backdrop-blur-sm"
+                  >
+                    Truth
+                    <ArrowRight className="w-5 h-5 ml-2" />
+                  </Button>
+                  <Button
+                    onClick={selectDare}
+                    className="w-full bg-red-600/80 hover:bg-red-600 text-white rounded-2xl h-14 text-lg font-semibold backdrop-blur-sm"
+                  >
+                    Dare
+                    <ArrowRight className="w-5 h-5 ml-2" />
+                  </Button>
+                </div>
+              ) : (
+                <div className="w-full flex items-center justify-center text-white">
+                  <LoaderCircle size={50} className="animate-spin" />
+                </div>
+              )}
+            </div>
+          ) : (
+            <div className="space-y-6">
+              <div className="text-center">
+                <Badge
+                  className={`text-sm px-4 py-2 rounded-full ${
+                    challengeType === "truth" ? "bg-blue-600" : "bg-red-600"
+                  } text-white`}
+                >
+                  {challengeType === "truth" ? "Truth" : "Dare"}
+                </Badge>
+              </div>
+
+              <div className="bg-black/30 backdrop-blur-sm rounded-2xl p-6 border border-white/10">
+                <p className="text-white text-center leading-relaxed">
+                  {currentChallenge}
+                </p>
+              </div>
+
+              <div className="space-y-3">
+                <Button
+                  onClick={nextTurn}
+                  className="w-full bg-white text-black hover:bg-gray-100 rounded-2xl h-14 text-lg font-semibold"
+                >
+                  Complete Challenge
+                </Button>
+                <Button
+                  onClick={() => {
+                    setCurrentChallenge(null);
+                    setChallengeType(null);
+                  }}
+                  variant="ghost"
+                  className="w-full text-white/60 hover:text-white hover:bg-white/10 rounded-2xl h-12"
+                >
+                  Go Back
+                </Button>
+              </div>
+            </div>
+          )}
+        </div>
+        <div className="flex flex-wrap gap-4 mb-10">
+          <MySelect
+            title="Select Level"
+            options={[
+              { value: "Family", label: "Family" },
+              { value: "Friend", label: "Friend" },
+              { value: "Stranger", label: "Stranger" },
+              { value: "Couple", label: "Couple" },
+              { value: "Steamy", label: "Steamy" },
+              { value: "Sex", label: "Sex" },
+            ]}
+            onChange={(value) => setSelectedLevel(value)}
           />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
+          <MySelect
+            title="Select Language"
+            options={[
+              { value: "English", label: "English" },
+              { value: "French", label: "French" },
+              { value: "Malagasy", label: "Malagasy" },
+            ]}
+            onChange={(value) => setSelectedLanguage(value)}
           />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
+        </div>
+
+        {/* Game Info */}
+        <div className="bg-white/5 backdrop-blur-xl rounded-2xl p-4 border border-white/10 mb-6">
+          <div className="text-center space-y-1">
+            <p className="text-white/60 text-xs">PLAYERS</p>
+            <p className="text-white text-sm">{players.join(" • ")}</p>
+            <p className="text-white/60 text-xs mt-2">
+              CHALLENGES COMPLETED: {completedChallenges}
+            </p>
+          </div>
+        </div>
+
+        {/* Reset Button */}
+        <Button
+          onClick={resetGame}
+          variant="ghost"
+          className="w-full text-white/60 hover:text-white hover:bg-white/10 rounded-2xl h-12"
         >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+          <RotateCcw className="w-4 h-4 mr-2" />
+          New Game
+        </Button>
+
+        {/* Bottom spacing */}
+        <div className="h-8"></div>
+      </div>
     </div>
   );
-}
+};
+
+export default TruthOrDareGame;
