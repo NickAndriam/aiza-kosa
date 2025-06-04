@@ -13,6 +13,8 @@ import {
   LoaderCircle,
 } from "lucide-react";
 import { MySelect } from "@/components/custom/Select";
+import { chatPuter } from "./services/puter";
+import truthOrDare from "./prompt/truthOrDare";
 
 const TruthOrDareGame = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -49,43 +51,34 @@ const TruthOrDareGame = () => {
     }
   };
 
-  //Getting truth questions from the API
+  //Getting truth questions from the puter
   const selectTruth = useCallback(async () => {
     setIsLoading(true);
-    const response = await fetch("/api/questions", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        type: "dare",
-        questionFor: selectedLevel,
+    const response = await chatPuter(
+      truthOrDare({
+        type: "truth",
+        level: selectedLevel,
         language: selectedLanguage,
-      }),
-    });
-    const data = await response.json();
-    setCurrentChallenge(data.message);
-    setChallengeType("dare");
+      })
+    );
+    setCurrentChallenge(response);
+    setChallengeType("truth");
     setIsLoading(false);
+
     // @typescript-eslint/no-explicit-any
   }, [selectedLanguage, selectedLevel]);
 
-  //Getting dare questions from the API
+  //Getting dare questions from the puter
   const selectDare = useCallback(async () => {
     setIsLoading(true);
-    const response = await fetch("/api/questions", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
+    const response = await chatPuter(
+      truthOrDare({
         type: "dare",
-        questionFor: selectedLevel,
+        level: selectedLevel,
         language: selectedLanguage,
-      }),
-    });
-    const data = await response.json();
-    setCurrentChallenge(data.message);
+      })
+    );
+    setCurrentChallenge(response);
     setChallengeType("dare");
     setIsLoading(false);
 
@@ -303,7 +296,7 @@ const TruthOrDareGame = () => {
               { value: "Stranger", label: "Stranger" },
               { value: "Couple", label: "Couple" },
               { value: "Steamy", label: "Steamy" },
-              { value: "Sex", label: "Sex" },
+              { value: "Sexual", label: "Sexual" },
             ]}
             onChange={(value) => setSelectedLevel(value)}
           />
