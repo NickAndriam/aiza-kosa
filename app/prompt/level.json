@@ -1,0 +1,110 @@
+[
+  {
+    "value": "Generate one original and engaging truth or dare question for a 'family' level game. Keep it clean, inclusive, and fun for all ages. Return only one short, clear, and culturally appropriate question.",
+    "label": "Family"
+  },
+  {
+    "value": "Generate one original and engaging truth or dare question for a 'friends' level game. Make it playful, surprising, and a little daring. Return only one short and fun question.",
+    "label": "Friends"
+  },
+  {
+    "value": "Generate one original and bold truth or dare question for an 'adventure' level game. Encourage risk and stepping out of comfort zones. Return one short, clear, and exciting question.",
+    "label": "Adventure"
+  },
+  {
+    "value": "Generate one respectful, socially engaging truth or dare question for a 'stranger' level game. Use it as an icebreaker. Return only one short and appropriate question.",
+    "label": "Stranger"
+  },
+  {
+    "value": "Generate one romantic and emotional truth or dare question for a 'long distance' level game. Focus on deep connection. Return only one clear and heartfelt question.",
+    "label": "Long Distance"
+  },
+  {
+    "value": "Generate one romantic and intimate truth or dare question for a 'couple' level game. Make it sweet and meaningful. Return only one concise and original question.",
+    "label": "Couple"
+  },
+  {
+    "value": "Generate one flirty and steamy truth or dare question for a 'steamy' level game. Make it sensual but tasteful. Return only one short and enticing question.",
+    "label": "Steamy"
+  },
+  {
+    "value": "Generate one provocative, explicit, and adult-only truth or dare question for a 'sexual' level game. Make it daring, passionate, and strictly for adults (18+). Return only one bold and arousing question.",
+    "label": "Sexual"
+  },
+  {
+    "value": "Generate one chaotic, wild, and hilarious truth or dare question for a 'party mode' game. Must be outrageous and entertaining. Return only one fun question.",
+    "label": "Party Mode"
+  },
+  {
+    "value": "Generate one light and humorous truth or dare question for a 'workplace' level game. Keep it safe and slightly awkward. Return only one funny but appropriate question.",
+    "label": "Workplace"
+  },
+  {
+    "value": "Generate one fun and age-appropriate truth or dare question for a 'teens' level game. Keep it playful and respectful. Return only one concise question.",
+    "label": "Teens"
+  },
+  {
+    "value": "Generate one chill and meaningful truth or dare question for a 'sober & chill' level game. Keep it calm, reflective, or casually fun. Return one relaxed question.",
+    "label": "Sober & Chill"
+  },
+  {
+    "value": "Generate one mysterious or twisted truth or dare question for a 'dark mode' level game. Make it eerie, unexpected, or edgy. Return only one imaginative question.",
+    "label": "Dark Mode"
+  },
+  {
+    "value": "Generate one extreme and fearless truth or dare question for an 'extreme' level game. Push limits while staying humanly possible. Return only one intense question.",
+    "label": "Extreme"
+  },
+  {
+    "value": "Generate one absurd or meme-inspired truth or dare question for a 'meme/joke' level game. Make it bizarre, unexpected, and funny. Return one hilarious question.",
+    "label": "Meme/Joke"
+  },
+  {
+    "value": "Generate one emotional and vulnerable truth-only question for a 'deep truths' level game. Aim for introspection and honesty. Return only one deep question.",
+    "label": "Deep Truths"
+  },
+  {
+    "value": "Generate one bold and exciting dare (no truth) for a 'daredevil' level game. It must be fun, safe, and socially or physically challenging. Return one original dare.",
+    "label": "Daredevil"
+  },
+  {
+    "value": "Generate one reflective and personal truth question for a 'self-reflection' level game. Encourage honesty and inner discovery. Return only one short question.",
+    "label": "Self-Reflection"
+  },
+  {
+    "value": "Generate one fun, safe, and inclusive truth or dare question for an 'online friends' level game. Best for remote players. Return one engaging question.",
+    "label": "Online Friends"
+  },
+  {
+    "value": "Generate one flirty and charming truth or dare icebreaker question for a 'first date' level game. Make it playful and interesting. Return only one fun question.",
+    "label": "First Date"
+  },
+  {
+    "value": "Generate one bold, cheeky, and playful truth or dare question for a 'bachelorette' level game. Keep it wild but tasteful. Return only one fun question.",
+    "label": "Bachelorette"
+  },
+  {
+    "value": "Generate one bonding, funny, and slightly daring truth or dare question for a 'sleepover' level game. Return only one creative question.",
+    "label": "Sleepover"
+  },
+  {
+    "value": "Generate one physical or movement-based dare for a 'fitness dare' level game. Encourage activity. Return only one original and doable dare.",
+    "label": "Fitness Dare"
+  },
+  {
+    "value": "Generate one nerdy, geeky, or fandom-themed truth or dare question for a 'geek mode' level game. Return one smart and playful question.",
+    "label": "Geek Mode"
+  },
+  {
+    "value": "Generate one controversial and thought-provoking truth question for a 'controversial truths' level game. Stir debate or deep thought. Return one powerful question.",
+    "label": "Controversial Truths"
+  },
+  {
+    "value": "Generate one wholesome, kind, and uplifting truth or dare question for a 'wholesome' level game. Return one heartwarming question.",
+    "label": "Wholesome"
+  },
+  {
+    "value": "Generate one artistic, imaginative, and expressive truth or dare question for a 'creative' level game. Encourage originality. Return one creative question.",
+    "label": "Creative"
+  }
+]
