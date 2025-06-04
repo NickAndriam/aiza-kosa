@@ -11,10 +11,12 @@ import {
   Star,
   ArrowRight,
   LoaderCircle,
+  CheckCheck,
 } from "lucide-react";
 import { MySelect } from "@/components/custom/Select";
 import { chatPuter } from "./services/puter";
 import truthOrDare from "./prompt/truthOrDare";
+import levelType from "./prompt/level.json";
 
 const TruthOrDareGame = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -66,7 +68,7 @@ const TruthOrDareGame = () => {
     setIsLoading(false);
 
     // @typescript-eslint/no-explicit-any
-  }, [selectedLanguage, selectedLevel]);
+  }, [selectedLanguage, selectedLevel, setChallengeType, setIsLoading]);
 
   //Getting dare questions from the puter
   const selectDare = useCallback(async () => {
@@ -83,7 +85,7 @@ const TruthOrDareGame = () => {
     setIsLoading(false);
 
     // @typescript-eslint/no-explicit-any
-  }, [selectedLanguage, selectedLevel]);
+  }, [selectedLanguage, selectedLevel, setChallengeType, setIsLoading]);
 
   const nextTurn = () => {
     setCurrentPlayerIndex((prev) => (prev + 1) % players.length);
@@ -194,7 +196,7 @@ const TruthOrDareGame = () => {
     );
   }
 
-  console.log({ selectedLanguage, selectedLevel });
+  console.log({ selectedLanguage, selectedLevel, challengeType });
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-red-900 p-4">
@@ -260,7 +262,9 @@ const TruthOrDareGame = () => {
                 </Badge>
               </div>
 
-              <div className="bg-black/30 backdrop-blur-sm rounded-2xl p-6 border border-white/10">
+              <div
+                className={`bg-black/20 backdrop-blur-sm rounded-2xl p-6 border border-white/10`}
+              >
                 <p className="text-white text-center leading-relaxed">
                   {currentChallenge}
                 </p>
@@ -269,8 +273,9 @@ const TruthOrDareGame = () => {
               <div className="space-y-3">
                 <Button
                   onClick={nextTurn}
-                  className="w-full bg-white text-black hover:bg-gray-100 rounded-2xl h-14 text-lg font-semibold"
+                  className="w-full border bg-transparent border-green-600 text-white hover:bg-green-700 rounded-2xl h-14 text-lg font-semibold"
                 >
+                  <CheckCheck className="text-white" />
                   Complete Challenge
                 </Button>
                 <Button
@@ -290,14 +295,7 @@ const TruthOrDareGame = () => {
         <div className="flex flex-wrap gap-4 mb-10">
           <MySelect
             title="Select Level"
-            options={[
-              { value: "Family", label: "Family" },
-              { value: "Friend", label: "Friend" },
-              { value: "Stranger", label: "Stranger" },
-              { value: "Couple", label: "Couple" },
-              { value: "Steamy", label: "Steamy" },
-              { value: "Sexual", label: "Sexual" },
-            ]}
+            options={[...levelType]}
             onChange={(value) => setSelectedLevel(value)}
           />
           <MySelect
