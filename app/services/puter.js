@@ -8,7 +8,7 @@ export async function loginPuter() {
 export async function chatPuter(message) {
   console.log("Asking puter...: ", message);
   try {
-    const response = await puter.ai.chat(message);
+    const response = await puter.ai.chat(message, { model: 'gpt-4o' });
     const content = response.message.content;
     console.log(content);
     return content;
@@ -30,4 +30,3 @@ export async function generatePuterImage(prompt) {
   }
 }
 
-export default usePuter;
