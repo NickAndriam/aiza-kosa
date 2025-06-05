@@ -263,7 +263,7 @@ const TruthOrDareGame = () => {
               </div>
 
               <div
-                className={`bg-black/20 backdrop-blur-sm rounded-2xl p-6 border border-white/10`}
+                className={`bg-black/50 backdrop-blur-sm rounded-2xl p-6 border border-white/10 shadow-2xl`}
               >
                 <p className="text-white text-center leading-relaxed">
                   {currentChallenge}
