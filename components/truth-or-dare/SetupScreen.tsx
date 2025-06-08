@@ -24,6 +24,9 @@ export const SetupScreen: React.FC<SetupScreenProps> = ({
   removePlayer,
   startGame,
 }) => {
+  // const [isLoggedIn, setIsLoggedIn] = React.useState(false);
+  // if (!isLoggedIn)
+  // return <PuterLogin isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />;
   return (
     <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-purple-800 p-4">
       <div className="max-w-2xl mx-auto">
@@ -94,7 +97,6 @@ export const SetupScreen: React.FC<SetupScreenProps> = ({
             </AlertDescription>
           </Alert>
         )}
-
         <Button
           onClick={startGame}
           disabled={players.length < 2}

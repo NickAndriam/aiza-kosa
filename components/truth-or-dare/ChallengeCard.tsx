@@ -53,7 +53,7 @@ export const Challenge = ({
       {showTranslation && (
         <>
           {/* translated challenge */}
-          {translations !== null && (
+          {translations !== null ? (
             <div className="border border-white/10 rounded-lg my-4 p-4 bg-black/30">
               {!isLoading ? (
                 <p className="text-white/80 text-center leading-relaxed">
@@ -64,19 +64,23 @@ export const Challenge = ({
               ) : (
                 <div className="flex items-center justify-center gap-2">
                   {isLoading ? (
-                    <>
-                      <Loader
-                        size={24}
-                        className="text-white animate-spin opacity-50"
-                      />
-                      <div className="text-white opacity-50 text-sm animate-pulse">
-                        Translating...
-                      </div>
-                    </>
+                    <Loading text="Translating..." />
                   ) : (
                     <p>Choose a language!</p>
                   )}
                 </div>
+              )}
+            </div>
+          ) : (
+            <div className="flex items-center justify-center gap-2">
+              {isLoading ? (
+                <Loading
+                  withIcon={false}
+                  text="Choose a language..."
+                  className="my-4"
+                />
+              ) : (
+                <Loading text="Translating..." />
               )}
             </div>
           )}
@@ -110,6 +114,25 @@ export const Challenge = ({
           </div>
         </>
       )}
+    </div>
+  );
+};
+
+const Loading = ({
+  text,
+  withIcon = true,
+  className = "",
+}: {
+  text?: string;
+  withIcon?: boolean;
+  className?: string;
+}) => {
+  return (
+    <div className={`flex items-center justify-center gap-2 ${className}`}>
+      {withIcon && (
+        <Loader size={24} className="text-white animate-spin opacity-50" />
+      )}
+      <div className="text-white opacity-50 text-sm animate-pulse">{text}</div>
     </div>
   );
 };
