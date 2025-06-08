@@ -27,7 +27,9 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "app/services/puter.js"
+    "app/services/puter.js",
+    "socket/socket.js",
+    "socket/server.js"
   ],
   "exclude": ["node_modules"]
 }
