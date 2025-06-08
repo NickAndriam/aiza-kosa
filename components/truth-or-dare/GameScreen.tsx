@@ -42,7 +42,6 @@ export const GameScreen: React.FC<GameScreenProps> = ({
   resetGame,
   clearChallenge,
 }) => {
-  console.log({ currentChallenge });
   return (
     <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-purple-900 p-4">
       <div className="max-w-2xl mx-auto">
