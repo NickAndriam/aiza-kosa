@@ -4,6 +4,16 @@ export async function loginPuter() {
     puter.print("Signed in<br>" + JSON.stringify(res));
   });
 }
+export async function getUserPuter() {
+  // if (typeof window === "undefined" || typeof window.puter === "undefined") {
+  //   console.error("Puter is not available (not running in browser or script not loaded)");
+  //   return;
+  // }
+  await puter.auth.getUser().then((res) => {
+    console.log("Puter User is: ", res)
+    window.puter.print("Signed in<br>" + JSON.stringify(res));
+  });
+}
 
 export async function chatPuter(message) {
   console.log("Asking puter...: ", message);
