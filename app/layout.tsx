@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Aiza Kosa",
-  description: "Truth or Dare Game",
+  description: "Multiple games for fun, powered by AI.",
 };
 
 export default function RootLayout({
