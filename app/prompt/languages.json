@@ -1,5 +1,6 @@
 [
-  { "value": "en-US", "label": "English" },
-  { "value": "fr-FR", "label": "French" },
-  { "value": "nb-NO", "label": "Norwegian" }
+  { "value": "English", "code": "en-US", "label": "English" },
+  { "value": "French", "code": "fr-FR", "label": "French" },
+  { "value": "Norwegian", "code": "nb-NO", "label": "Norwegian" },
+  { "value": "Spanish", "code": "es-ES", "label": "Spanish" }
 ]

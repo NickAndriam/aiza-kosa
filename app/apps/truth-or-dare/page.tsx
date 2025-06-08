@@ -20,6 +20,8 @@ const TruthOrDareGame = () => {
   const [completedChallenges, setCompletedChallenges] = useState(0);
   const [previousQuestions, setPreviousQuestions] = useState<string[]>([]);
 
+  console.log("Selected Language: ", selectedLanguage);
+
   // Add player
   const addPlayer = () => {
     const trimmedName = newPlayerName.trim();
@@ -66,7 +68,7 @@ const TruthOrDareGame = () => {
         setChallengeType(type);
         setPreviousQuestions((prev) => [...prev, response]);
       } else {
-        console.error("Connection Lost...");
+        console.error("Connection Lost... ", response);
       }
       setIsLoading(false);
     },
